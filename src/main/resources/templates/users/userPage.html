@@ -1,63 +1,72 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>User page</title>
+    <title>Table of users</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <style>
-        .table {
-            width: 100%;
-            border: none;
-            margin-bottom: 20px;
+        html, body {
+            height: 100%;
         }
-
-        .table thead th {
-            padding: 10px;
-            font-weight: 500;
-            font-size: 16px;
-            line-height: 20px;
-            text-align: left;
-            color: #444441;
-            border-top: 2px solid #716561;
-            border-bottom: 2px solid #716561;
+        .content {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
         }
-
-        .table tbody td {
-            padding: 10px;
-            font-size: 14px;
-            line-height: 20px;
-            color: #444441;
-            border-top: 1px solid #716561;
-        }
-
     </style>
 </head>
 <body>
+<div class="container-fluid h-100 content">
+    <div class="row bg-dark" style="height: 50px; padding: 2px; display: flex; align-items: center;">
+        <div class="col-sm" style="flex: 1; color: white;font-size:20px">
+            <span>
+                <strong th:text="${user.getEmail()}"></strong>
+            </span> with roles: <span th:text="${user.rolesToString()}"></span>
+        </div>
+        <div class="col-sm" style="text-align: right;">
+            <a href="/logout" style="color: lightgray;">Logout</a>
+        </div>
+    </div>
 
-<table border="1" class="table">
-    <caption class="-summary">Your account information</caption>
-
-    <tr>
-        <th>Id</th>
-        <th>First name</th>
-        <th>Last name</th>
-        <th>Age</th>
-        <th>Email</th>
-        <th>Role</th>
-    </tr>
-    <tr th:object ="${user}">
-        <td th:utext="${user.getId()}">id</td>
-        <td th:utext="${user.getFirstName()}">first_name</td>
-        <td th:utext="${user.getLastName()}">last_name</td>
-        <td th:utext="${user.getAge()}">age</td>
-        <td th:utext="${user.getEmail()}">email</td>
-        <td th:utext="${user.rolesToString()}">role</td>
-    </tr>
-</table>
-<form>
-    <input class="position" type="button" value="Logout" onclick=location.href="/logout">
-</form>
-<div sec:authorize="hasRole('ROLE_ADMIN')">
-    <a href="/admin">Admin</a>
+    <div class="row flex-grow-1">
+        <div class="col-md-2" style="background-color: white;">
+            <nav class="nav nav-pills flex-column">
+                <a class="nav-link active">User</a>
+            </nav>
+        </div>
+        <div class="col" style="background-color: whitesmoke;">
+            <br/>
+            <h1>User information-page</h1>
+            <div class="border p-3">
+                <h5 class="mb-0">About user</h5>
+            </div>
+            <div class="border p-3" style="background-color: white">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>First name</th>
+                        <th>Last name</th>
+                        <th>Age</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:object="${user}">
+                        <td th:utext="${user.getId()}">id</td>
+                        <td th:utext="${user.getFirstName()}">first_name</td>
+                        <td th:utext="${user.getLastName()}">last_name</td>
+                        <td th:utext="${user.getAge()}">age</td>
+                        <td th:utext="${user.getEmail()}">email</td>
+                        <td th:utext="${user.rolesToString()}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>

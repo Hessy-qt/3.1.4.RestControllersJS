@@ -54,16 +54,15 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
 
     @Override
-    public void updateUser(int id, User user,Set<Role> roles) {
-        user.getRoles().clear();
-        user.getRoles().addAll(roles);
-        User userToUpdate = usersRepository.findById(id).get();
-        userToUpdate.setFirstName(user.getFirstName());
-        userToUpdate.setLastName(user.getLastName());
-        userToUpdate.setAge(user.getAge());
-        userToUpdate.setEmail(user.getEmail());
-        userToUpdate.setRoles(user.getRoles());
-        usersRepository.save(userToUpdate);
+    public void updateUser(User user,Set<Role> roles,String password) {
+        if(roles != null) {
+            user.getRoles().clear();
+            user.getRoles().addAll(roles);
+        }
+        if(!password.isEmpty()) {
+            user.setPassword(new BCryptPasswordEncoder().encode(password));
+        }
+        usersRepository.save(user);
     }
 
     @Transactional(readOnly = true)

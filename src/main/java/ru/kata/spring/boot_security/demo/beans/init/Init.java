@@ -21,8 +21,8 @@ import java.util.Set;
 public class Init {
 
     private final UsersRepository usersRepository;
-    private final User user1 = new User("admin", "admin", 20, "admin", new BCryptPasswordEncoder().encode("admin"), Set.of(new Role("ROLE_ADMIN")));
-    private final User user2 = new User("user", "user", 21, "user", new BCryptPasswordEncoder().encode("user"), Set.of(new Role("ROLE_USER")));
+    private final User user1 = new User("admin", "admin", 20, "admin@mail.ru", new BCryptPasswordEncoder().encode("admin"), Set.of(new Role("ROLE_ADMIN")));
+    private final User user2 = new User("user", "user", 21, "user@mail.ru", new BCryptPasswordEncoder().encode("user"), Set.of(new Role("ROLE_USER")));
 
     @Autowired
     public Init(UsersRepository usersRepository) {
