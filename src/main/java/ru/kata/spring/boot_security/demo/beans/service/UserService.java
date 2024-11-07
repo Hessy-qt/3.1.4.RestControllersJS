@@ -9,9 +9,12 @@ import java.util.Set;
 
 public interface UserService {
     void addUser(User user);
+
     void deleteUser(int id);
+
     List<User> getAllUsers();
-    void updateUser(User user, Set<Role> roles,String password);
+
+    void updateUser(User user, Set<Role> roles, String password);
+
     User findByEmail(String email);
-    User findById(int id);
 }

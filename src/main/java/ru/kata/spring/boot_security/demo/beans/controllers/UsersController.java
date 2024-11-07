@@ -24,11 +24,10 @@ public class UsersController {
         this.roleService = roleService;
     }
 
-
     @GetMapping("/admin")
-    public String getUsers(Model model,Principal principal) {
+    public String getUsers(Model model, Principal principal) {
         model.addAttribute("users", userService.getAllUsers());
-        model.addAttribute("user",userService.findByEmail(principal.getName()));
+        model.addAttribute("user", userService.findByEmail(principal.getName()));
         model.addAttribute("userForForm", new User());
         model.addAttribute("roles", roleService.findAll());
         return "/admin/show";
@@ -47,8 +46,11 @@ public class UsersController {
     }
 
     @PostMapping("/admin/editUser")
-    public String editUser(@ModelAttribute User user, @RequestParam(required = false) Set<Role> roles, @RequestParam(name = "newPassword") String newPassword) {
-        userService.updateUser(user, roles,newPassword);
+    public String editUser(
+            @ModelAttribute User user,
+            @RequestParam(required = false) Set<Role> roles,
+            @RequestParam(name = "newPassword") String newPassword) {
+        userService.updateUser(user, roles, newPassword);
         return "redirect:/admin";
     }
 
@@ -57,5 +59,4 @@ public class UsersController {
         userService.deleteUser(user.getId());
         return "redirect:/admin";
     }
-
 }

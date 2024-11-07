@@ -15,22 +15,22 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "first_name",nullable = false)
+    @Column(name = "first_name", nullable = false)
     private String firstName;
 
-    @Column(name = "last_name",nullable = false)
+    @Column(name = "last_name", nullable = false)
     private String lastName;
 
-    @Column(name = "age",nullable = false)
+    @Column(name = "age", nullable = false)
     private int age;
 
-    @Column(name = "email",unique = true)
+    @Column(name = "email", unique = true)
     private String email;
 
-    @Column(name = "password",nullable = false)
+    @Column(name = "password", nullable = false)
     private String password;
 
-    @ManyToMany(fetch = FetchType.LAZY,cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
@@ -40,7 +40,7 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public User(String firstName, String lastName, int age, String email, String password,Set<Role> roles) {
+    public User(String firstName, String lastName, int age, String email, String password, Set<Role> roles) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.age = age;
@@ -101,12 +101,13 @@ public class User implements UserDetails {
         this.roles = roles;
     }
 
-    public String rolesToString(){
+    //Метод для получения ролей в виде строки
+    public String rolesToString() {
         StringBuilder roles = new StringBuilder();
-       for(Role role:this.roles){
-           roles.append((role.toString()+ " ").replaceAll("^ROLE_|\\d+$", ""));
-       }
-       return roles.toString();
+        for (Role role : this.roles) {
+            roles.append((role.toString() + " ").replaceAll("^ROLE_|\\d+$", ""));
+        }
+        return roles.toString();
     }
 
     @Override

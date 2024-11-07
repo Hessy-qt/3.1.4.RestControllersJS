@@ -54,12 +54,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
 
     @Override
-    public void updateUser(User user,Set<Role> roles,String password) {
-        if(roles != null) {
+    public void updateUser(User user, Set<Role> roles, String password) {
+        if (roles != null) {
             user.getRoles().clear();
             user.getRoles().addAll(roles);
         }
-        if(!password.isEmpty()) {
+        if (!password.isEmpty()) {
             user.setPassword(new BCryptPasswordEncoder().encode(password));
         }
         usersRepository.save(user);
@@ -69,12 +69,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public User findByEmail(String email) {
         return usersRepository.findByEmail(email);
-    }
-
-    @Transactional(readOnly = true)
-    @Override
-    public User findById(int id) {
-        return usersRepository.findById(id).get();
     }
 
     @Transactional(readOnly = true)

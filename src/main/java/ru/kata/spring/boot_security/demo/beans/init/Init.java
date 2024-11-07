@@ -21,8 +21,18 @@ import java.util.Set;
 public class Init {
 
     private final UsersRepository usersRepository;
-    private final User user1 = new User("admin", "admin", 20, "admin@mail.ru", new BCryptPasswordEncoder().encode("admin"), Set.of(new Role("ROLE_ADMIN")));
-    private final User user2 = new User("user", "user", 21, "user@mail.ru", new BCryptPasswordEncoder().encode("user"), Set.of(new Role("ROLE_USER")));
+    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+    private final User user1 = new User(
+            "admin", "admin", 20, "admin@mail.ru",
+            passwordEncoder.encode("admin"),
+            Set.of(new Role("ROLE_ADMIN"))
+    );
+    private final User user2 = new User(
+            "user", "user", 21, "user@mail.ru",
+            passwordEncoder.encode("user"),
+            Set.of(new Role("ROLE_USER"))
+    );
 
     @Autowired
     public Init(UsersRepository usersRepository) {
@@ -33,7 +43,6 @@ public class Init {
     public void init() {
         usersRepository.save(user1);
         usersRepository.save(user2);
-
     }
 
     @PreDestroy
@@ -41,5 +50,4 @@ public class Init {
         usersRepository.delete(user1);
         usersRepository.delete(user2);
     }
-
 }
