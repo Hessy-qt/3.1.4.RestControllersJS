@@ -16,5 +16,9 @@ public interface UserService {
 
     void updateUser(User user, Set<Role> roles, String password);
 
+    void updateUser(User user);
+
     User findByEmail(String email);
+
+    User findById(int id);
 }

@@ -16,20 +16,15 @@ import java.util.Set;
 public class UsersController {
 
     private final UserService userService;
-    private final RoleService roleService;
 
     @Autowired
-    public UsersController(UserService userService, RoleService roleService) {
+    public UsersController(UserService userService) {
         this.userService = userService;
-        this.roleService = roleService;
     }
 
     @GetMapping("/admin")
     public String getUsers(Model model, Principal principal) {
-        model.addAttribute("users", userService.getAllUsers());
         model.addAttribute("user", userService.findByEmail(principal.getName()));
-        model.addAttribute("userForForm", new User());
-        model.addAttribute("roles", roleService.findAll());
         return "/admin/show";
     }
 
@@ -39,24 +34,4 @@ public class UsersController {
         return "/users/userPage";
     }
 
-    @PostMapping("/admin/addNewUser")
-    public String addUser(@ModelAttribute User user) {
-        userService.addUser(user);
-        return "redirect:/admin";
-    }
-
-    @PostMapping("/admin/editUser")
-    public String editUser(
-            @ModelAttribute User user,
-            @RequestParam(required = false) Set<Role> roles,
-            @RequestParam(name = "newPassword") String newPassword) {
-        userService.updateUser(user, roles, newPassword);
-        return "redirect:/admin";
-    }
-
-    @PostMapping("/admin/deleteUser")
-    public String deleteUser(@ModelAttribute User user) {
-        userService.deleteUser(user.getId());
-        return "redirect:/admin";
-    }
 }

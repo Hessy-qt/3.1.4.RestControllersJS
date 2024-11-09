@@ -65,6 +65,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         usersRepository.save(user);
     }
 
+    @Override
+    public void updateUser(User user) {
+        usersRepository.save(user);
+    }
+
     @Transactional(readOnly = true)
     @Override
     public User findByEmail(String email) {
@@ -79,5 +84,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             throw new UsernameNotFoundException(String.format("User %s not found", username));
         }
         return user;
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public User findById(int id) {
+        return usersRepository.findById(id).get();
     }
 }
