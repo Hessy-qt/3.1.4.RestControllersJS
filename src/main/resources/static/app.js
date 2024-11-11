@@ -200,10 +200,11 @@ myNewUserForm.addEventListener('submit', function (e) {
     e.preventDefault();
     const selectedRoleIds = [...document.getElementById('roleSelect').selectedOptions].map(option => option.value);
     const objectsOfRoles = selectedRoleIds.map(number => ({id: number}));
+    const switcher = document.getElementById('userTableTab')
     console.log(objectsOfRoles,firstName.value,lastName.value,age.value,email.value,password.value)
     console.log(objectsOfRoles)
 
-    const res = fetch(url, {
+    fetch(url, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -216,13 +217,17 @@ myNewUserForm.addEventListener('submit', function (e) {
             "password": password.value,
             "roles": objectsOfRoles
         })
-    }).then(res => res.json().then(res => showUsersHtml(res)))
+    }).then(res => res.json().then(res => {
+        showUsersHtml(res)
+        new bootstrap.Tab(switcher).show()
+    }))
     myNewUserForm.value = ''
     firstName.value = ''
     lastName.value = ''
     age.value = ''
     email.value = ''
     password.value = ''
+
 })
 
 
