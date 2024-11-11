@@ -73,7 +73,7 @@ function modalDelete(id, firstName, lastName, age, email, rolesString) {
     modal.show()
 }
 
-//Вспывание модального окна для редактирования для каждого юзера
+//Вспывание модального окна для редактирования каждого юзера
 function modalEdit(id, firstName, lastName, age, email) {
     const modalEdit = document.getElementById('modalEdit')
     const modal = new bootstrap.Modal(modalEdit)
@@ -93,6 +93,10 @@ function modalEdit(id, firstName, lastName, age, email) {
 
     editButton.onclick = function (event) {
         event.preventDefault()
+        if (!editFirstname.value || !editLastName.value || !editAge.value || !editEmail.value || !editPassword.value) {
+            alert('Все поля должны быть заполнены')
+            return
+        }
         updateUser(editId.value, editFirstname.value, editLastName.value, editAge.value, editEmail.value, editPassword.value)
         modal.hide()
     }
@@ -125,8 +129,8 @@ async function deleteUser(id) {
 //Функция обновления юзера
 function updateUser(id, editFirstName, editLastName, editAge, editEmail, editPassword) {
     const roleMapping = {
-        1: "ADMIN",
-        2: "USER"
+        1: "ROLE_ADMIN",
+        2: "ROLE_USER"
     };
 
     const selectedRoleIds = [...document.getElementById('editRoleSelect').selectedOptions]
@@ -155,9 +159,9 @@ function updateUser(id, editFirstName, editLastName, editAge, editEmail, editPas
     })
         .then(response => response.json())
         .then(res => {
-            console.log(res);
+            console.log(res,selectedRoleIds);
 
-            // Обновляем строку в таблице
+const roles = res.roles.map(roleObj => roleObj.role.replace(/^ROLE_/, '')).join(', ')
             const row = document.getElementById(`user${id}`);
             if (row) {
                 row.innerHTML = `
@@ -166,20 +170,20 @@ function updateUser(id, editFirstName, editLastName, editAge, editEmail, editPas
                     <td>${res.lastName}</td>
                     <td>${res.age}</td>
                     <td>${res.email}</td>
-                    <td>${res.roles.map(roleObj => roleObj.role.replace(/^ROLE_/, '')).join(', ')}</td>
+                    <td>${roles}</td>
                     <td>
                         <button onclick="modalEdit(${res.id}, '${res.firstName}', '${res.lastName}', ${res.age}, '${res.email}')"
                         type="button" class="btn btn-info" data-toggle="modal">Edit</button>
                     </td>
                     <td>
-                        <button onclick="modalDelete(${res.id}, '${res.firstName}', '${res.lastName}', ${res.age}, '${res.email}', '${res.roles.map(roleObj => roleObj.role.replace(/^ROLE_/, '')).join(', ')}')"
-                        type="button" class="btn btn-danger" data-toggle="modal">Delete</button>
-                    </td>
-                `;
+            <button onclick="modalDelete(${res.id}, '${res.firstName}', '${res.lastName}', ${res.age}, '${res.email}', '${roles}')"  
+            type="button" class="btn btn-danger" data-toggle="modal">Delete</button>
+        </td>
+                `
             }
         })
         .catch(error => {
-            console.error('Error:', error);
+            console.error('Error:', error)
         });
 }
 
@@ -196,6 +200,7 @@ myNewUserForm.addEventListener('submit', function (e) {
     e.preventDefault();
     const selectedRoleIds = [...document.getElementById('roleSelect').selectedOptions].map(option => option.value);
     const objectsOfRoles = selectedRoleIds.map(number => ({id: number}));
+    console.log(objectsOfRoles,firstName.value,lastName.value,age.value,email.value,password.value)
     console.log(objectsOfRoles)
 
     const res = fetch(url, {

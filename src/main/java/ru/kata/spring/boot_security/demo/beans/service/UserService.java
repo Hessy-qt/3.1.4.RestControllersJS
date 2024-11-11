@@ -14,8 +14,6 @@ public interface UserService {
 
     List<User> getAllUsers();
 
-    void updateUser(User user, Set<Role> roles, String password);
-
     void updateUser(User user);
 
     User findByEmail(String email);

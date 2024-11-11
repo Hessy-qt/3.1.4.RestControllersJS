@@ -52,21 +52,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return usersRepository.findAll();
     }
 
-
-    @Override
-    public void updateUser(User user, Set<Role> roles, String password) {
-        if (roles != null) {
-            user.getRoles().clear();
-            user.getRoles().addAll(roles);
-        }
-        if (!password.isEmpty()) {
-            user.setPassword(new BCryptPasswordEncoder().encode(password));
-        }
-        usersRepository.save(user);
-    }
-
     @Override
     public void updateUser(User user) {
+        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
         usersRepository.save(user);
     }
 
