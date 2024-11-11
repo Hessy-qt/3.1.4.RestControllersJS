@@ -1,4 +1,4 @@
-const url = 'http://localhost:7070/api/users';
+const url = 'http://localhost:8080/api/users';
 getAllUsers()
 
 async function getAllUsers() {
@@ -107,7 +107,7 @@ function modalEdit(id, firstName, lastName, age, email) {
 // Функция удаление юзера
 async function deleteUser(id) {
     try {
-        const res = await fetch(`http://localhost:7070/api/users/${id}`, {
+        const res = await fetch(`http://localhost:8080/api/users/${id}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
